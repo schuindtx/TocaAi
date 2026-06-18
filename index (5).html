@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toca Aí — Cada mesa virando cardápio, WhatsApp e avaliação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#070707;
+  --bg2:#0f0f0f;
+  --bg3:#161616;
+  --bg4:#1c1c1c;
+  --border:rgba(255,255,255,0.06);
+  --border2:rgba(255,255,255,0.11);
+  --border3:rgba(255,255,255,0.18);
+  --text:#efefef;
+  --muted:#777;
+  --muted2:#444;
+  --accent:#C8FF00;
+  --accent-dim:rgba(200,255,0,0.06);
+  --accent-mid:rgba(200,255,0,0.13);
+  --r:10px;
+  --rl:18px;
+  --rxl:28px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 2.5rem;background:rgba(7,7,7,0.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:-0.02em}
+.logo span{color:var(--accent)}
+.nav-right{display:flex;align-items:center;gap:2rem}
+.nav-link{font-size:0.82rem;color:var(--muted);text-decoration:none;transition:color .2s}
+.nav-link:hover{color:var(--text)}
+.nav-btn{background:var(--accent);color:#000;font-size:0.82rem;font-weight:700;padding:0.5rem 1.2rem;border-radius:999px;text-decoration:none;transition:opacity .2s}
+.nav-btn:hover{opacity:.85}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:9rem 2rem 5rem;position:relative;overflow:hidden}
+.hero-glow{position:absolute;top:-150px;left:50%;transform:translateX(-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(200,255,0,0.055) 0%,transparent 65%);pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent-dim);border:1px solid rgba(200,255,0,0.18);border-radius:999px;padding:.3rem .9rem;font-size:.72rem;font-weight:600;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;margin-bottom:2rem}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(3rem,7.5vw,6rem);font-weight:700;line-height:1.03;letter-spacing:-.035em;max-width:860px;margin-bottom:1.5rem}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero-sub{font-size:clamp(1rem,1.8vw,1.15rem);color:var(--muted);max-width:440px;margin-bottom:2.5rem;line-height:1.75}
+.hero-actions{display:flex;gap:.85rem;flex-wrap:wrap;justify-content:center;margin-bottom:4rem}
+.btn-p{background:var(--accent);color:#000;font-weight:700;font-size:.92rem;padding:.8rem 2rem;border-radius:999px;text-decoration:none;transition:opacity .2s,transform .15s}
+.btn-p:hover{opacity:.9;transform:translateY(-1px)}
+.btn-g{border:1px solid var(--border2);color:var(--muted);font-size:.92rem;padding:.8rem 2rem;border-radius:999px;text-decoration:none;transition:border-color .2s,color .2s}
+.btn-g:hover{border-color:var(--border3);color:var(--text)}
+
+/* PRODUTOS */
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:3rem}
+.product-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rxl);overflow:hidden;transition:border-color .25s}
+.product-card:hover{border-color:var(--border2)}
+.product-img{width:100%;aspect-ratio:4/3;overflow:hidden;background:var(--bg3)}
+.product-img img{width:100%;height:100%;object-fit:cover;display:block}
+.product-info{padding:1.75rem}
+.product-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+.product-head h3{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:-.02em}
+.product-pill{font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);background:var(--accent-dim);border:1px solid rgba(200,255,0,.2);border-radius:999px;padding:.25rem .7rem}
+.product-info>p{font-size:.88rem;color:var(--muted);line-height:1.65;margin-bottom:1.25rem}
+.product-feats{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.product-feats li{font-size:.83rem;color:var(--text);display:flex;align-items:center;gap:.6rem;padding-left:0}
+.product-feats li::before{content:'';width:16px;height:16px;border-radius:50%;background:var(--accent-dim);border:1px solid rgba(200,255,0,.3);flex-shrink:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C8FF00' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");background-size:10px;background-position:center;background-repeat:no-repeat}
+
+
+/* VIDEO PLACEHOLDER */
+.video-placeholder{width:100%;aspect-ratio:16/10;border-radius:var(--rxl);border:1px solid var(--border2);background:linear-gradient(135deg,var(--bg2),var(--bg3));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;position:relative;overflow:hidden}
+.video-placeholder::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(200,255,0,.10),transparent 55%);pointer-events:none}
+.video-play{width:68px;height:68px;border-radius:50%;background:var(--accent);color:#000;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;box-shadow:0 0 40px rgba(200,255,0,.18)}
+.video-play svg{width:30px;height:30px;margin-left:4px}
+.video-label{position:relative;z-index:1;font-size:.82rem;color:var(--muted);font-weight:600;letter-spacing:.02em}
+
+/* PRODUCT HERO */
+.product-hero{position:relative;width:100%;max-width:420px;margin-top:1rem}
+.product-hero img{width:100%;height:auto;border-radius:var(--rxl);display:block;border:1px solid var(--border2)}
+.product-tag{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);display:inline-flex;align-items:center;gap:.5rem;background:rgba(7,7,7,0.82);backdrop-filter:blur(10px);border:1px solid var(--border2);border-radius:999px;padding:.5rem 1rem;font-size:.78rem;font-weight:500;color:var(--text);white-space:nowrap}
+.product-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1.8s infinite}
+
+/* MOCKUP (legado) */
+.mockup{width:100%;max-width:580px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rxl);overflow:hidden}
+.mockup-bar{display:flex;align-items:center;gap:.5rem;padding:.9rem 1.25rem;border-bottom:1px solid var(--border);background:var(--bg3)}
+.mockup-dot{width:10px;height:10px;border-radius:50%}
+.mockup-url{flex:1;background:var(--bg4);border-radius:6px;padding:.3rem .75rem;font-size:.72rem;color:var(--muted);text-align:center}
+.mockup-body{padding:2rem 1.5rem}
+.mockup-biz{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.mockup-logo{width:48px;height:48px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1rem;color:#000;flex-shrink:0}
+.mockup-biz-info strong{display:block;font-size:.95rem;font-weight:600;margin-bottom:.15rem}
+.mockup-biz-info span{font-size:.78rem;color:var(--muted)}
+.mockup-links{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+.mockup-link{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.85rem 1rem;font-size:.8rem;font-weight:500;color:var(--text);display:flex;align-items:center;gap:.5rem}
+.mockup-link svg{width:15px;height:15px;opacity:.5;flex-shrink:0}
+.mockup-link.accent{background:var(--accent-dim);border-color:rgba(200,255,0,.2);color:var(--accent)}
+.mockup-link.accent svg{opacity:1}
+.mockup-ping{display:flex;align-items:center;gap:.5rem;margin-top:1.25rem;padding:.6rem .9rem;background:var(--accent-dim);border:1px solid rgba(200,255,0,.15);border-radius:8px;font-size:.75rem;color:var(--accent)}
+.ping-circle{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* DIVISOR */
+.divider{border:none;border-top:1px solid var(--border);max-width:1100px;margin:0 auto}
+
+/* SEÇÃO */
+section{padding:5.5rem 2rem;max-width:1100px;margin:0 auto}
+.label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:.9rem;display:block}
+.stitle{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.7rem,3.5vw,2.6rem);font-weight:700;letter-spacing:-.025em;line-height:1.1;margin-bottom:.9rem}
+.ssub{font-size:1rem;color:var(--muted);max-width:480px;line-height:1.75}
+
+/* PROBLEMA */
+.problem-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-top:3rem}
+.problem-card{background:var(--bg);padding:2rem 1.75rem}
+.p-icon{width:36px;height:36px;border-radius:8px;background:var(--bg3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem}
+.p-icon svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.problem-card h3{font-size:.92rem;font-weight:600;margin-bottom:.4rem}
+.problem-card p{font-size:.82rem;color:var(--muted);line-height:1.6}
+
+/* COMO FUNCIONA */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem;margin-top:3rem}
+.step{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:1.75rem;transition:border-color .25s}
+.step:hover{border-color:var(--border2)}
+.step-num{font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:700;color:var(--accent);opacity:.35;line-height:1;margin-bottom:1rem}
+.step h3{font-size:.95rem;font-weight:600;margin-bottom:.4rem}
+.step p{font-size:.83rem;color:var(--muted);line-height:1.6}
+
+/* RESULTADO */
+.results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:3rem}
+.result-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:1.75rem;text-align:center}
+.result-num{font-family:'Space Grotesk',sans-serif;font-size:2.4rem;font-weight:700;color:var(--accent);letter-spacing:-.03em;display:block;margin-bottom:.25rem}
+.result-label{font-size:.8rem;color:var(--muted);line-height:1.4}
+
+/* PARA QUEM */
+.audience{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:3rem}
+.aud-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;transition:background .2s,border-color .2s}
+.aud-card:hover{background:var(--bg3);border-color:var(--border2)}
+.aud-icon{width:32px;height:32px;border-radius:7px;background:var(--bg4);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
+.aud-icon svg{width:15px;height:15px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.aud-card h3{font-size:.9rem;font-weight:600;margin-bottom:.3rem}
+.aud-card p{font-size:.8rem;color:var(--muted);line-height:1.55}
+
+/* CTA */
+.cta-wrap{padding:5rem 2rem;text-align:center}
+.cta-box{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rxl);padding:4.5rem 2.5rem;max-width:680px;margin:0 auto;position:relative;overflow:hidden}
+.cta-box::before{content:'';position:absolute;bottom:-100px;left:50%;transform:translateX(-50%);width:400px;height:300px;background:radial-gradient(ellipse,rgba(200,255,0,0.07) 0%,transparent 65%);pointer-events:none}
+.cta-box h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;letter-spacing:-.025em;line-height:1.1;margin-bottom:1rem}
+.cta-box h2 em{font-style:normal;color:var(--accent)}
+.cta-box p{font-size:.95rem;color:var(--muted);margin-bottom:2rem;max-width:380px;margin-left:auto;margin-right:auto;line-height:1.7}
+.btn-wa{display:inline-flex;align-items:center;gap:.6rem;background:var(--accent);color:#000;font-weight:700;font-size:.95rem;padding:.9rem 2.25rem;border-radius:999px;text-decoration:none;transition:opacity .2s,transform .15s}
+.btn-wa:hover{opacity:.9;transform:translateY(-2px)}
+.btn-wa svg{width:18px;height:18px;fill:currentColor}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:.78rem;color:var(--muted2)}
+footer a{color:var(--muted);text-decoration:none}
+
+@media(max-width:640px){
+  nav{padding:1rem 1.25rem}
+  .nav-right .nav-link{display:none}
+  .hero{padding:7rem 1.25rem 4rem}
+  .mockup-links{grid-template-columns:1fr}
+  .cta-box{padding:3rem 1.5rem}
+  .problem-grid,.results,.audience{grid-template-columns:1fr}
+}
+
+/* AJUSTE: página, textos e cards centralizados */
+section{text-align:center}
+.ssub{margin-left:auto;margin-right:auto}
+.problem-card,.step,.product-info,.result-card,.aud-card{text-align:center}
+.p-icon,.aud-icon{margin-left:auto;margin-right:auto}
+.product-head{justify-content:center;gap:.75rem;flex-wrap:wrap}
+.product-feats li{justify-content:center;text-align:center}
+.products,.steps,.problem-grid,.results,.audience{justify-items:stretch}
+.product-info>p{max-width:420px;margin-left:auto;margin-right:auto}
+.cta-box{text-align:center}
+
+</style>
+</head>
+<body>
+<!-- Arquivo limpo: imagens em Base64 foram removidas. Coloque suas imagens na pasta assets/ com os nomes display-exemplo.jpg e mesa-exemplo.jpg, ou altere o src das imagens no HTML. -->
+
+<nav>
+  <a href="#" class="logo">Toca<span>Aí</span></a>
+  <div class="nav-right">
+    <a href="#produtos" class="nav-link">Solução</a>
+    <a href="#como-funciona" class="nav-link">Como funciona</a>
+    <a href="#para-quem" class="nav-link">Para quem</a>
+    <a href="#contato" class="nav-btn">Solicitar orçamento</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="badge"><span class="badge-dot"></span>Para restaurantes, lanchonetes e deliverys · Colombo & Curitiba</div>
+  <h1>Transforme cada mesa<br>em cardápio, WhatsApp e <em>avaliação.</em></h1>
+  <p class="hero-sub">Um adesivo de mesa com a sua marca. O cliente aproxima o celular e acessa cardápio, WhatsApp, Instagram ou avaliação no Google. Sem baixar aplicativo, sem abrir câmera e sem digitar nada.</p>
+  <div class="hero-actions">
+    <a href="#contato" class="btn-p">Solicitar orçamento</a>
+    <a href="#como-funciona" class="btn-g">Ver como funciona</a>
+  </div>
+
+</div>
+
+<hr class="divider">
+
+<!-- PROBLEMA -->
+<section>
+  <span class="label">O problema</span>
+  <h2 class="stitle">O cliente está na sua mesa.<br>Mas você ainda perde contato com ele.</h2>
+  <p class="ssub">Ele come, gosta, paga e vai embora. Só que, se não for fácil, ele não avalia no Google, não salva seu WhatsApp e não acompanha seu Instagram.</p>
+
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="p-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      </div>
+      <h3>Cliente satisfeito vai embora em silêncio</h3>
+      <p>Quem gostou muitas vezes não fala nada. E você perde a chance de transformar esse momento em avaliação e retorno.</p>
+    </div>
+    <div class="problem-card">
+      <div class="p-icon">
+        <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+      </div>
+      <h3>Cardápio impresso fica velho rápido</h3>
+      <p>Mudou preço, acabou sabor ou entrou promoção? O papel fica para trás e você precisa reimprimir tudo.</p>
+    </div>
+    <div class="problem-card">
+      <div class="p-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <h3>QR Code ainda cria barreira</h3>
+      <p>Tem cliente que não quer abrir câmera, não consegue focar ou desiste antes de chegar no cardápio.</p>
+    </div>
+    <div class="problem-card">
+      <div class="p-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <h3>Avaliação boa precisa estar fácil</h3>
+      <p>Se o caminho for longo, o cliente deixa para depois. E depois quase nunca acontece.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- COMO FUNCIONA -->
+<section id="como-funciona">
+  <span class="label">Como funciona</span>
+  <h2 class="stitle">A gente instala.<br>Seu cliente só aproxima o celular.</h2>
+  <p class="ssub">Você não precisa montar nada sozinho. A gente configura, instala e deixa pronto para usar no salão.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Instalamos no seu restaurante</h3>
+      <p>Vamos até o local, aplicamos o Toca Aí nas mesas ou no balcão e configuramos tudo com a sua marca.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>O cliente aproxima o celular</h3>
+      <p>Sem baixar aplicativo. Sem abrir câmera. Sem digitar nada. Ele aproxima o celular e escolhe o que quer acessar.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Se mudar algo, você não reimprime nada</h3>
+      <p>Mudou cardápio, promoção, WhatsApp ou Instagram? Atualizamos o conteúdo sem trocar o adesivo da mesa.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PRODUTOS -->
+<section id="produtos">
+  <span class="label">A solução</span>
+  <h2 class="stitle">O Toca Aí fica onde<br>o cliente já está.</h2>
+  <p class="ssub">O foco é simples: colocar seus links mais importantes na frente do cliente, no momento em que ele está consumindo no seu restaurante.</p>
+
+  <div class="products">
+    <div class="product-card">
+      <div class="product-img">
+        <img id="img-display" src="assets/display-exemplo.jpg" alt="Toca Aí Balcão no caixa ou retirada" />
+      </div>
+      <div class="product-info">
+        <div class="product-head">
+          <h3>Toca Aí Balcão</h3>
+          <span class="product-pill">Entrada</span>
+        </div>
+        <p>Uma opção para caixa, retirada ou balcão. Ideal para quem quer facilitar cardápio, WhatsApp e avaliação antes do cliente sair.</p>
+        <ul class="product-feats">
+          <li>Material personalizado com sua marca</li>
+          <li>NFC e QR Code de apoio</li>
+          <li>Ideal para caixa e retirada</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <img id="img-mesa" src="assets/mesa-exemplo.jpg" alt="Toca Aí Mesa, adesivo redondo sobre a mesa" />
+      </div>
+      <div class="product-info">
+        <div class="product-head">
+          <h3>Toca Aí Mesa</h3>
+          <span class="product-pill">Principal</span>
+        </div>
+        <p>Adesivo redondo e discreto para cada mesa. O cliente acessa tudo ali mesmo, enquanto espera, come ou termina a refeição.</p>
+        <ul class="product-feats">
+          <li>Adesivo premium para mesa</li>
+          <li>Cliente aproxima e acessa</li>
+          <li>Personalizado com sua marca</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- RESULTADOS -->
+<section>
+  <span class="label">O que muda</span>
+  <h2 class="stitle">Mais avaliações.<br>Mais contato. Menos trabalho para explicar.</h2>
+  <p class="ssub">Em vez de depender do cliente procurar seu link depois, você entrega o caminho pronto enquanto ele ainda está no seu estabelecimento.</p>
+
+  <div class="results">
+    <div class="result-card">
+      <span class="result-num">Google</span>
+      <span class="result-label">Avaliação fácil<br>antes do cliente sair</span>
+    </div>
+    <div class="result-card">
+      <span class="result-num">Menu</span>
+      <span class="result-label">Cardápio digital<br>sem papel velho</span>
+    </div>
+    <div class="result-card">
+      <span class="result-num">Whats</span>
+      <span class="result-label">Cliente chama<br>sem procurar número</span>
+    </div>
+    <div class="result-card">
+      <span class="result-num">Insta</span>
+      <span class="result-label">Cliente presencial<br>vira seguidor</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PARA QUEM -->
+<section id="para-quem">
+  <span class="label">Para quem é</span>
+  <h2 class="stitle">Feito para negócios<br>de comida com atendimento presencial.</h2>
+  <p class="ssub">Restaurantes, lanchonetes e deliverys precisam de acesso rápido, cardápio atualizado e avaliação no Google acontecendo no momento certo.</p>
+
+  <div class="audience">
+    <div class="aud-card">
+      <div class="aud-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
+      </div>
+      <h3>Restaurantes</h3>
+      <p>Para colocar cardápio, avaliação, WhatsApp e Instagram direto na mesa do cliente.</p>
+    </div>
+    <div class="aud-card">
+      <div class="aud-icon">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      </div>
+      <h3>Lanchonetes e deliverys</h3>
+      <p>Para balcão, retirada e consumo rápido, sem depender de papel, câmera ou explicação do atendente.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-wrap" id="contato">
+  <div class="cta-box">
+    <h2>Quer ver como ficaria<br>nas mesas do <em>seu restaurante?</em></h2>
+    <p>Fale pelo WhatsApp, mande uma foto do seu salão e montamos uma ideia de instalação. O orçamento depende da quantidade de mesas e pontos de atendimento.</p>
+    <a href="https://wa.me/5541999999999?text=Ol%C3%A1%2C%20quero%20um%20or%C3%A7amento%20do%20Toca%20A%C3%AD%20para%20meu%20restaurante." class="btn-wa" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Solicitar orçamento no WhatsApp
+    </a>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 Toca Aí · Colombo, PR · <a href="mailto:contato@tocaai.com.br">contato@tocaai.com.br</a></p>
+</footer>
+
+</body>
+</html>
